@@ -1,0 +1,45 @@
+1) Создаём таблицы
+
+CREATE TABLE customers (
+  customer_id    SERIAL PRIMARY KEY,
+  first_name     VARCHAR(50) NOT NULL,
+  last_name      VARCHAR(50) NOT NULL,
+  email          VARCHAR(100),
+  phone          VARCHAR(20)
+);
+
+CREATE TABLE transactions (
+  transaction_id   SERIAL PRIMARY KEY,
+  customer_id      INT NOT NULL,
+  transaction_date DATE NOT NULL,
+  total_amount     DECIMAL(10,2),
+  CONSTRAINT fk_customer
+    FOREIGN KEY (customer_id) 
+    REFERENCES customers (customer_id)
+);
+
+2) Доп. таблицы
+
+CREATE TABLE products (
+  product_id   SERIAL PRIMARY KEY,
+  product_name VARCHAR(100) NOT NULL,
+  price        DECIMAL(10,2)
+);
+
+CREATE TABLE transaction_items (
+  transaction_id INT NOT NULL,
+  product_id     INT NOT NULL,
+  quantity       INT NOT NULL,
+  CONSTRAINT pk_transaction_items PRIMARY KEY (transaction_id, product_id),
+  CONSTRAINT fk_transaction
+    FOREIGN KEY (transaction_id)
+    REFERENCES transactions (transaction_id),
+  CONSTRAINT fk_product
+    FOREIGN KEY (product_id)
+    REFERENCES products (product_id)
+);
+
+3) Загрузка данных (Insert, Import)
+
+INSERT INTO customers (first_name, last_name, email, phone)
+VALUES ('Иван', 'Петров', 'ivan.petrov@example.com', '+79990001122');
