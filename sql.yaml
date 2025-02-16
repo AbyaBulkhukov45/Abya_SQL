@@ -1,0 +1,17 @@
+CREATE TABLE customers (
+  customer_id    SERIAL PRIMARY KEY,
+  first_name     VARCHAR(50) NOT NULL,
+  last_name      VARCHAR(50) NOT NULL,
+  email          VARCHAR(100),
+  phone          VARCHAR(20)
+);
+
+CREATE TABLE transactions (
+  transaction_id   SERIAL PRIMARY KEY,
+  customer_id      INT NOT NULL,
+  transaction_date DATE NOT NULL,
+  total_amount     DECIMAL(10,2),
+  CONSTRAINT fk_customer
+    FOREIGN KEY (customer_id) 
+    REFERENCES customers (customer_id)
+);
